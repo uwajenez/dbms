@@ -1,11 +1,4 @@
-NAMES:GIHOZO Gisline
-ID:28775
-DATABASE MANAGEMENT SYSTEM
 
-mysql> create database employer_system;
-ERROR 1007 (HY000): Can't create database 'employer_system'; database exists
-mysql> drop database employer_system;
-Query OK, 4 rows affected (0.09 sec)
 
 mysql> create database employer_system;
 Query OK, 1 row affected (0.01 sec)
@@ -931,4 +924,5 @@ mysql> select name, hire_date, CASE WHEN MONTH(hire_date) = MONTH(curdate()) THE
 | NULL | 2021-08-30 | not anniversary month |
 | NULL | 2022-05-19 | not anniversary month |
 +------+------------+-----------------------+
+
 10 rows in set (0.00 sec)
