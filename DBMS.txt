@@ -1,0 +1,934 @@
+NAMES:GIHOZO Gisline
+ID:28775
+DATABASE MANAGEMENT SYSTEM
+
+mysql> create database employer_system;
+ERROR 1007 (HY000): Can't create database 'employer_system'; database exists
+mysql> drop database employer_system;
+Query OK, 4 rows affected (0.09 sec)
+
+mysql> create database employer_system;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use employer_system;
+Database changed
+mysql> create table employee(employee_id INT PRIMARY KEY,first_name VARCHAR(50),last_name VARCHAR(50),email VARCHAR(100),hire_date DATE,salary DECIMAL(10, 2),department_id INT);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table department(department_id INT PRIMARY KEY,department_name VARCHAR(100));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table projects(project_id INT PRIMARY KEY,project_name VARCHAR(100),start_date DATE,end_date DATE);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>  create table employee_projects(employee_id INT,foreign key(employee_id) references employee(employee_id),project_id int,foreign key(project_id) references projects(project_id),assigned_date DATE);
+Query OK, 0 rows affected (0.08 sec)
+
+mysql>
+mysql>  insert into department(department_id, department_name) values (1, 'human resources'), (2, 'finance'), (3, 'information technology'), (4, 'marketing'), (5, 'legal'), (6, 'operations'), (7, 'customer service'), (8, 'sales'), (9, 'research and development'), (10, 'procurement');
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO projects(project_id, project_name, start_date, end_date) VALUES
+    -> (201, 'HR Revamp', '2023-01-01', '2023-12-31'),
+    -> (202, 'Finance Automation', '2022-05-15', '2023-04-30'),
+    -> (203, 'IT Infrastructure Upgrade', '2024-01-01', NULL),
+    -> (204, 'Marketing Blitz 2025', '2025-02-01', '2025-06-30'),
+    -> (205, 'Legal Compliance', '2023-07-10', '2024-01-10'),
+    -> (206, 'Customer Portal', '2021-11-01', '2022-10-31'),
+    -> (207, 'Sales Booster', '2022-04-01', '2023-03-31'),
+    -> (208, 'R&D Pilot', '2025-01-01', NULL),
+    -> (209, 'Procurement Tracker', '2024-03-15', '2024-11-15'),
+    -> (210, 'Operations Streamline', '2022-09-01', '2023-09-01');
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql>
+mysql> INSERT INTO employee_projects(employee_id, project_id, assigned_date) VALUES
+    -> (101, 201, '2023-01-10'),
+    -> (102, 203, '2024-01-05'),
+    -> (103, 202, '2022-05-20'),
+    -> (104, 204, '2025-02-10'),
+    -> (105, 203, '2024-01-07'),
+    -> (106, 207, '2022-04-15'),
+    -> (107, 205, '2023-07-15'),
+    -> (108, 210, '2022-09-10'),
+    -> (109, 208, '2025-01-10'),
+    -> (110, 206, '2021-11-05');
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> show tables;
++---------------------------+
+| Tables_in_employer_system |
++---------------------------+
+| department                |
+| employee                  |
+| employee_projects         |
+| projects                  |
++---------------------------+
+4 rows in set (0.01 sec)
+
+mysql> desc employee_projects;
++---------------+------+------+-----+---------+-------+
+| Field         | Type | Null | Key | Default | Extra |
++---------------+------+------+-----+---------+-------+
+| employee_id   | int  | YES  | MUL | NULL    |       |
+| project_id    | int  | YES  | MUL | NULL    |       |
+| assigned_date | date | YES  |     | NULL    |       |
++---------------+------+------+-----+---------+-------+
+3 rows in set (0.02 sec)
+
+mysql> select * from employee_projects;
++-------------+------------+---------------+
+| employee_id | project_id | assigned_date |
++-------------+------------+---------------+
+|         101 |        201 | 2023-01-10    |
+|         102 |        203 | 2024-01-05    |
+|         103 |        202 | 2022-05-20    |
+|         104 |        204 | 2025-02-10    |
+|         105 |        203 | 2024-01-07    |
+|         106 |        207 | 2022-04-15    |
+|         107 |        205 | 2023-07-15    |
+|         108 |        210 | 2022-09-10    |
+|         109 |        208 | 2025-01-10    |
+|         110 |        206 | 2021-11-05    |
++-------------+------------+---------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from projects;
++------------+---------------------------+------------+------------+
+| project_id | project_name              | start_date | end_date   |
++------------+---------------------------+------------+------------+
+|        201 | HR Revamp                 | 2023-01-01 | 2023-12-31 |
+|        202 | Finance Automation        | 2022-05-15 | 2023-04-30 |
+|        203 | IT Infrastructure Upgrade | 2024-01-01 | NULL       |
+|        204 | Marketing Blitz 2025      | 2025-02-01 | 2025-06-30 |
+|        205 | Legal Compliance          | 2023-07-10 | 2024-01-10 |
+|        206 | Customer Portal           | 2021-11-01 | 2022-10-31 |
+|        207 | Sales Booster             | 2022-04-01 | 2023-03-31 |
+|        208 | R&D Pilot                 | 2025-01-01 | NULL       |
+|        209 | Procurement Tracker       | 2024-03-15 | 2024-11-15 |
+|        210 | Operations Streamline     | 2022-09-01 | 2023-09-01 |
++------------+---------------------------+------------+------------+
+10 rows in set (0.00 sec)
+
+mysql>  select * from employee;
++-------------+------------+-----------+---------------------------+------------+---------+---------------+
+| employee_id | first_name | last_name | email                     | hire_date  | salary  | department_id |
++-------------+------------+-----------+---------------------------+------------+---------+---------------+
+|         101 | Alice      | Johnson   | alice.johnson@company.com | 2015-03-15 | 4500.00 |             1 |
+|         102 | Bob        | Smith     | bob.smith@company.com     | 2018-06-23 | 5000.00 |             3 |
+|         103 | Carol      | Adams     | carol.adams@company.com   | 2019-09-10 | 6700.00 |             2 |
+|         104 | David      | Lee       | david.lee@company.com     | 2020-02-05 | 4800.00 |             4 |
+|         105 | Eve        | Martins   | eve.martins@company.com   | 2019-12-11 | 7000.00 |             3 |
+|         106 | Frank      | Green     | frank.green@company.com   | 2017-07-08 | 6000.00 |             8 |
+|         107 | Grace      | Brown     | grace.brown@company.com   | 2014-11-02 | 4900.00 |             5 |
+|         108 | Hank       | Wilson    | hank.wilson@company.com   | 2013-02-17 | 3100.00 |             6 |
+|         109 | Ivy        | Clark     | ivy.clark@company.com     | 2021-08-30 | 2700.00 |             9 |
+|         110 | Jake       | White     | jake.white@company.com    | 2022-05-19 | 3600.00 |             7 |
++-------------+------------+-----------+---------------------------+------------+---------+---------------+
+10 rows in set (0.00 sec)
+
+mysql>  select * from department;
++---------------+--------------------------+
+| department_id | department_name          |
++---------------+--------------------------+
+|             1 | human resources          |
+|             2 | finance                  |
+|             3 | information technology   |
+|             4 | marketing                |
+|             5 | legal                    |
+|             6 | operations               |
+|             7 | customer service         |
+|             8 | sales                    |
+|             9 | research and development |
+|            10 | procurement              |
++---------------+--------------------------+
+10 rows in set (0.00 sec)
+
+mysql> select concat(first_name,'  ',last_name) as full_name from employee;
++----------------+
+| full_name      |
++----------------+
+| Alice  Johnson |
+| Bob  Smith     |
+| Carol  Adams   |
+| David  Lee     |
+| Eve  Martins   |
+| Frank  Green   |
+| Grace  Brown   |
+| Hank  Wilson   |
+| Ivy  Clark     |
+| Jake  White    |
++----------------+
+10 rows in set (0.00 sec)
+
+mysql> update employee set first_name= lower(first_name), last_name= lower(last_name);
+Query OK, 10 rows affected (0.01 sec)
+Rows matched: 10  Changed: 10  Warnings: 0
+
+mysql> select * from employee;
++-------------+------------+-----------+---------------------------+------------+---------+---------------+
+| employee_id | first_name | last_name | email                     | hire_date  | salary  | department_id |
++-------------+------------+-----------+---------------------------+------------+---------+---------------+
+|         101 | alice      | johnson   | alice.johnson@company.com | 2015-03-15 | 4500.00 |             1 |
+|         102 | bob        | smith     | bob.smith@company.com     | 2018-06-23 | 5000.00 |             3 |
+|         103 | carol      | adams     | carol.adams@company.com   | 2019-09-10 | 6700.00 |             2 |
+|         104 | david      | lee       | david.lee@company.com     | 2020-02-05 | 4800.00 |             4 |
+|         105 | eve        | martins   | eve.martins@company.com   | 2019-12-11 | 7000.00 |             3 |
+|         106 | frank      | green     | frank.green@company.com   | 2017-07-08 | 6000.00 |             8 |
+|         107 | grace      | brown     | grace.brown@company.com   | 2014-11-02 | 4900.00 |             5 |
+|         108 | hank       | wilson    | hank.wilson@company.com   | 2013-02-17 | 3100.00 |             6 |
+|         109 | ivy        | clark     | ivy.clark@company.com     | 2021-08-30 | 2700.00 |             9 |
+|         110 | jake       | white     | jake.white@company.com    | 2022-05-19 | 3600.00 |             7 |
++-------------+------------+-----------+---------------------------+------------+---------+---------------+
+10 rows in set (0.00 sec)
+
+mysql> select lower(first_name),(last_name) from employee;
++-------------------+-----------+
+| lower(first_name) | last_name |
++-------------------+-----------+
+| alice             | johnson   |
+| bob               | smith     |
+| carol             | adams     |
+| david             | lee       |
+| eve               | martins   |
+| frank             | green     |
+| grace             | brown     |
+| hank              | wilson    |
+| ivy               | clark     |
+| jake              | white     |
++-------------------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> select left(first_name, 3) AS first_three_letters from employee;
++---------------------+
+| first_three_letters |
++---------------------+
+| ali                 |
+| bob                 |
+| car                 |
+| dav                 |
+| eve                 |
+| fra                 |
+| gra                 |
+| han                 |
+| ivy                 |
+| jak                 |
++---------------------+
+10 rows in set (0.00 sec)
+mysql> select replace(email, '@company.com', '@org.com') from employee;
++--------------------------------------------+
+| replace(email, '@company.com', '@org.com') |
++--------------------------------------------+
+| alice.johnson@org.com                      |
+| bob.smith@org.com                          |
+| carol.adams@org.com                        |
+| david.lee@org.com                          |
+| eve.martins@org.com                        |
+| frank.green@org.com                        |
+| grace.brown@org.com                        |
+| hank.wilson@org.com                        |
+| ivy.clark@org.com                          |
+| jake.white@org.com                         |
++--------------------------------------------+
+10 rows in set (0.00 sec)
+
+mysql> select TRIM('value  ');
++-----------------+
+| TRIM('value  ') |
++-----------------+
+| value           |
++-----------------+
+1 row in set (0.00 sec)
+
+mysql> select LENGTH(CONCAT(first_name, ' ', last_name)) AS full_name_length FROM employee;
++------------------+
+| full_name_length |
++------------------+
+|               13 |
+|                9 |
+|               11 |
+|                9 |
+|               11 |
+|               11 |
+|               11 |
+|               11 |
+|                9 |
+|               10 |
++------------------+
+10 rows in set (0.00 sec)
+mysql> select INSTR(email, '@') FROM employee;
++-------------------+
+| INSTR(email, '@') |
++-------------------+
+|                14 |
+|                10 |
+|                12 |
+|                10 |
+|                12 |
+|                12 |
+|                12 |
+|                12 |
+|                10 |
+|                11 |
++-------------------+
+10 rows in set (0.00 sec)
+mysql> select upper(project_name) from projects;
++---------------------------+
+| upper(project_name)       |
++---------------------------+
+| HR REVAMP                 |
+| FINANCE AUTOMATION        |
+| IT INFRASTRUCTURE UPGRADE |
+| MARKETING BLITZ 2025      |
+| LEGAL COMPLIANCE          |
+| CUSTOMER PORTAL           |
+| SALES BOOSTER             |
+| R&D PILOT                 |
+| PROCUREMENT TRACKER       |
+| OPERATIONS STREAMLINE     |
++---------------------------+
+10 rows in set (0.01 sec)
+
+mysql> select REPLACE(project_name, '-', '') from projects;
++--------------------------------+
+| REPLACE(project_name, '-', '') |
++--------------------------------+
+| HR Revamp                      |
+| Finance Automation             |
+| IT Infrastructure Upgrade      |
+| Marketing Blitz 2025           |
+| Legal Compliance               |
+| Customer Portal                |
+| Sales Booster                  |
+| R&D Pilot                      |
+| Procurement Tracker            |
+| Operations Streamline          |
++--------------------------------+
+10 rows in set (0.00 sec)
+
+mysql> select CONCAT('emp: ', e.first_name, ' ', e.last_name, ' (', d.department_name, ')') AS employee_label FROM employee e JOIN department d on e.department_id =d.department_id;
++-------------------------------------------+
+| employee_label                            |
++-------------------------------------------+
+| emp: alice johnson (human resources)      |
+| emp: bob smith (information technology)   |
+| emp: carol adams (finance)                |
+| emp: david lee (marketing)                |
+| emp: eve martins (information technology) |
+| emp: frank green (sales)                  |
+| emp: grace brown (legal)                  |
+| emp: hank wilson (operations)             |
+| emp: ivy clark (research and development) |
+| emp: jake white (customer service)        |
++-------------------------------------------+
+10 rows in set (0.01 sec)
+
+mysql> select email, LENGTH(email) AS email_length FROM employee;
++---------------------------+--------------+
+| email                     | email_length |
++---------------------------+--------------+
+| alice.johnson@company.com |           25 |
+| bob.smith@company.com     |           21 |
+| carol.adams@company.com   |           23 |
+| david.lee@company.com     |           21 |
+| eve.martins@company.com   |           23 |
+| frank.green@company.com   |           23 |
+| grace.brown@company.com   |           23 |
+| hank.wilson@company.com   |           23 |
+| ivy.clark@company.com     |           21 |
+| jake.white@company.com    |           22 |
++---------------------------+--------------+
+10 rows in set (0.00 sec)
+
+mysql> select substring(email, locate('.', email) + 1, locate('@',email) - locate('.', email) - 1) from employee;
++--------------------------------------------------------------------------------------+
+| substring(email, locate('.', email) + 1, locate('@',email) - locate('.', email) - 1) |
++--------------------------------------------------------------------------------------+
+| johnson                                                                              |
+| smith                                                                                |
+| adams                                                                                |
+| lee                                                                                  |
+| martins                                                                              |
+| green                                                                                |
+| brown                                                                                |
+| wilson                                                                               |
+| clark                                                                                |
+| white                                                                                |
++--------------------------------------------------------------------------------------+
+10 rows in set (0.00 sec)
+
+mysql> select CONCAT(UPPER(last_name), ', ', first_name) AS  formatted_name FROM employee;
++----------------+
+| formatted_name |
++----------------+
+| JOHNSON, alice |
+| SMITH, bob     |
+| ADAMS, carol   |
+| LEE, david     |
+| MARTINS, eve   |
+| GREEN, frank   |
+| BROWN, grace   |
+| WILSON, hank   |
+| CLARK, ivy     |
+| WHITE, jake    |
++----------------+
+10 rows in set (0.00 sec)
+
+mysql> select e.first_name, e.last_name, CONCAT(e.first_name, ' ', e.last_name, CASE  WHEN ep.project_id IS not NULL AND p.end_date IS NULL THEN '(ACTIVE)' ELSE '' END ) AS employee_status from employee e LEFT JOIN employee_projects ep ON e.employee_id = ep.employee_id LEFT JOIN projects p ON ep.project_id =p.project_id;
++------------+-----------+---------------------+
+| first_name | last_name | employee_status     |
++------------+-----------+---------------------+
+| alice      | johnson   | alice johnson       |
+| bob        | smith     | bob smith(ACTIVE)   |
+| carol      | adams     | carol adams         |
+| david      | lee       | david lee           |
+| eve        | martins   | eve martins(ACTIVE) |
+| frank      | green     | frank green         |
+| grace      | brown     | grace brown         |
+| hank       | wilson    | hank wilson         |
+| ivy        | clark     | ivy clark(ACTIVE)   |
+| jake       | white     | jake white          |
++------------+-----------+---------------------+
+10 rows in set (0.02 sec)
+
+mysql> select round(salary, 0) FROM employee;
++------------------+
+| round(salary, 0) |
++------------------+
+|             4500 |
+|             5000 |
+|             6700 |
+|             4800 |
+|             7000 |
+|             6000 |
+|             4900 |
+|             3100 |
+|             2700 |
+|             3600 |
++------------------+
+10 rows in set (0.00 sec)
+
+mysql> select salary  FROM employee WHERE MOD(salary, 2) =0;
++---------+
+| salary  |
++---------+
+| 4500.00 |
+| 5000.00 |
+| 6700.00 |
+| 4800.00 |
+| 7000.00 |
+| 6000.00 |
+| 4900.00 |
+| 3100.00 |
+| 2700.00 |
+| 3600.00 |
++---------+
+10 rows in set (0.00 sec)
+
+mysql> select project_name, DATEDIFF(end_date, start_date) AS project_duration_days FROM projects;
++---------------------------+-----------------------+
+| project_name              | project_duration_days |
++---------------------------+-----------------------+
+| HR Revamp                 |                   364 |
+| Finance Automation        |                   350 |
+| IT Infrastructure Upgrade |                  NULL |
+| Marketing Blitz 2025      |                   149 |
+| Legal Compliance          |                   184 |
+| Customer Portal           |                   364 |
+| Sales Booster             |                   364 |
+| R&D Pilot                 |                  NULL |
+| Procurement Tracker       |                   245 |
+| Operations Streamline     |                   365 |
++---------------------------+-----------------------+
+10 rows in set (0.00 sec)
+
+mysql> select ABS  ( (select salary FROM employee WHERE employee_id = 101) - (select salary FROM employee WHERE employee_id = 102)) AS salary_difference;
++-------------------+
+| salary_difference |
++-------------------+
+|            500.00 |
++-------------------+
+1 row in set (0.01 sec)
+
+mysql> select salary, round(salary * power(1.10, 1), 2)  AS raised_salary FROM employee;
++---------+---------------+
+| salary  | raised_salary |
++---------+---------------+
+| 4500.00 |          4950 |
+| 5000.00 |          5500 |
+| 6700.00 |          7370 |
+| 4800.00 |          5280 |
+| 7000.00 |          7700 |
+| 6000.00 |          6600 |
+| 4900.00 |          5390 |
+| 3100.00 |          3410 |
+| 2700.00 |          2970 |
+| 3600.00 |          3960 |
++---------+---------------+
+10 rows in set (0.01 sec)
+
+mysql> select RAND();
++---------------------+
+| RAND()              |
++---------------------+
+| 0.22175162585615332 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT salary, CEIL(salary) AS salary_ceil, FLOOR(salary) AS salary_floor FROM employee;
++---------+-------------+--------------+
+| salary  | salary_ceil | salary_floor |
++---------+-------------+--------------+
+| 4500.00 |        4500 |         4500 |
+| 5000.00 |        5000 |         5000 |
+| 6700.00 |        6700 |         6700 |
+| 4800.00 |        4800 |         4800 |
+| 7000.00 |        7000 |         7000 |
+| 6000.00 |        6000 |         6000 |
+| 4900.00 |        4900 |         4900 |
+| 3100.00 |        3100 |         3100 |
+| 2700.00 |        2700 |         2700 |
+| 3600.00 |        3600 |         3600 |
++---------+-------------+--------------+
+10 rows in set (0.00 sec)
+
+mysql> alter table employee add column phone_number varchar(20);
+Query OK, 0 rows affected (0.16 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT phone_number, LENGTH(phone_number) AS phone_number_length FROM employee;
++--------------+---------------------+
+| phone_number | phone_number_length |
++--------------+---------------------+
+| NULL         |                NULL |
+| NULL         |                NULL |
+| NULL         |                NULL |
+| NULL         |                NULL |
+| NULL         |                NULL |
+| NULL         |                NULL |
+| NULL         |                NULL |
+| NULL         |                NULL |
+| NULL         |                NULL |
+| NULL         |                NULL |
++--------------+---------------------+
+10 rows in set (0.00 sec)
+
+mysql>
+mysql> SELECT
+    ->     salary,
+    ->     CASE
+    ->         WHEN salary >= 5000 THEN 'High'
+    ->         WHEN salary >= 3000 THEN 'Medium'
+    ->         ELSE 'Low'
+    ->     END AS salary_category
+    ->
+    -> FROM employee;
++---------+-----------------+
+| salary  | salary_category |
++---------+-----------------+
+| 4500.00 | Medium          |
+| 5000.00 | High            |
+| 6700.00 | High            |
+| 4800.00 | Medium          |
+| 7000.00 | High            |
+| 6000.00 | High            |
+| 4900.00 | Medium          |
+| 3100.00 | Medium          |
+| 2700.00 | Low             |
+| 3600.00 | Medium          |
++---------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> select salary, LENGTH(CAST(salary AS CHAR)) AS digit_count FROM employee;
++---------+-------------+
+| salary  | digit_count |
++---------+-------------+
+| 4500.00 |           7 |
+| 5000.00 |           7 |
+| 6700.00 |           7 |
+| 4800.00 |           7 |
+| 7000.00 |           7 |
+| 6000.00 |           7 |
+| 4900.00 |           7 |
+| 3100.00 |           7 |
+| 2700.00 |           7 |
+| 3600.00 |           7 |
++---------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> select current_date;
++--------------+
+| current_date |
++--------------+
+| 2025-07-31   |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select first_name, last_name, datediff(current_date(), hire_date) AS days_worked FROM employee;
++------------+-----------+-------------+
+| first_name | last_name | days_worked |
++------------+-----------+-------------+
+| alice      | johnson   |        3791 |
+| bob        | smith     |        2595 |
+| carol      | adams     |        2151 |
+| david      | lee       |        2003 |
+| eve        | martins   |        2059 |
+| frank      | green     |        2945 |
+| grace      | brown     |        3924 |
+| hank       | wilson    |        4547 |
+| ivy        | clark     |        1431 |
+| jake       | white     |        1169 |
++------------+-----------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> alter table employee add column HIRE DATE;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+mysql>
+mysql>
+mysql>
+mysql> SELECT first_name, last_name, hire_date FROM employee WHERE YEAR(hire_date) = YEAR(CURRENT_DATE());
+Empty set (0.00 sec) 
+mysql> select NOW();
++---------------------+
+| NOW()               |
++---------------------+
+| 2025-07-31 00:24:33 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> alter table employee add column date DATE;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>  select hire_date, year(hire-date) AS hire_year, MONTH(hire_date) AS hire_month, day(hire_date) AS hire_day FROM employee;
++------------+-----------+------------+----------+
+| hire_date  | hire_year | hire_month | hire_day |
++------------+-----------+------------+----------+
+| 2015-03-15 |      NULL |          3 |       15 |
+| 2018-06-23 |      NULL |          6 |       23 |
+| 2019-09-10 |      NULL |          9 |       10 |
+| 2020-02-05 |      NULL |          2 |        5 |
+| 2019-12-11 |      NULL |         12 |       11 |
+| 2017-07-08 |      NULL |          7 |        8 |
+| 2014-11-02 |      NULL |         11 |        2 |
+| 2013-02-17 |      NULL |          2 |       17 |
+| 2021-08-30 |      NULL |          8 |       30 |
+| 2022-05-19 |      NULL |          5 |       19 |
++------------+-----------+------------+----------+
+10 rows in set (0.00 sec)
+
+mysql> alter table employee add column last varchar(50);
+Query OK, 0 rows affected (1.28 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+mysql> alter table employee drop column last_name;
+Query OK, 0 rows affected (1.19 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee add column last_name varchar(255);
+Query OK, 0 rows affected (1.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+mysql> alter table employee add column name varchar(50);
+Query OK, 0 rows affected (0.66 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>  select first_name, last-name, hire_date FROM employee WHERE YEAR(hire_date) < 2020;
++------------+-----------+------------+
+| first_name | last-name | hire_date  |
++------------+-----------+------------+
+| alice      |      NULL | 2015-03-15 |
+| bob        |      NULL | 2018-06-23 |
+| carol      |      NULL | 2019-09-10 |
+| eve        |      NULL | 2019-12-11 |
+| frank      |      NULL | 2017-07-08 |
+| grace      |      NULL | 2014-11-02 |
+| hank       |      NULL | 2013-02-17 |
++------------+-----------+------------+
+7 rows in set (0.00 sec)mysql>  select * from employee where hire_date < '2020-01-01';
++-------------+------------+---------------------------+------------+---------+---------------+--------------+------+------+------+-----------+------+
+| employee_id | first_name | email                     | hire_date  | salary  | department_id | phone_number | HIRE | date | last | last_name | name |
++-------------+------------+---------------------------+------------+---------+---------------+--------------+------+------+------+-----------+------+
+|         101 | alice      | alice.johnson@company.com | 2015-03-15 | 4500.00 |             1 | NULL         | NULL | NULL | NULL | NULL      | NULL |
+|         102 | bob        | bob.smith@company.com     | 2018-06-23 | 5000.00 |             3 | NULL         | NULL | NULL | NULL | NULL      | NULL |
+|         103 | carol      | carol.adams@company.com   | 2019-09-10 | 6700.00 |             2 | NULL         | NULL | NULL | NULL | NULL      | NULL |
+|         105 | eve        | eve.martins@company.com   | 2019-12-11 | 7000.00 |             3 | NULL         | NULL | NULL | NULL | NULL      | NULL |
+|         106 | frank      | frank.green@company.com   | 2017-07-08 | 6000.00 |             8 | NULL         | NULL | NULL | NULL | NULL      | NULL |
+|         107 | grace      | grace.brown@company.com   | 2014-11-02 | 4900.00 |             5 | NULL         | NULL | NULL | NULL | NULL      | NULL |
+|         108 | hank       | hank.wilson@company.com   | 2013-02-17 | 3100.00 |             6 | NULL         | NULL | NULL | NULL | NULL      | NULL |
++-------------+------------+---------------------------+------------+---------+---------------+--------------+------+------+------+-----------+------+
+7 rows in set (0.00 sec)
+
+mysql> select * from projects where end_date between curdate() - interval '30' day and curdate();
+Empty set (0.00 sec)
+
+mysql> select * from projects where end_date between now() - interval '30' day and now();
+Empty set (0.00 sec)
+
+mysql> select project_name, start_date, end_date, datediff(end_date, start_date) AS total_days_duration from projects where end_date is not null;
++-----------------------+------------+------------+---------------------+
+| project_name          | start_date | end_date   | total_days_duration |
++-----------------------+------------+------------+---------------------+
+| HR Revamp             | 2023-01-01 | 2023-12-31 |                 364 |
+| Finance Automation    | 2022-05-15 | 2023-04-30 |                 350 |
+| Marketing Blitz 2025  | 2025-02-01 | 2025-06-30 |                 149 |
+| Legal Compliance      | 2023-07-10 | 2024-01-10 |                 184 |
+| Customer Portal       | 2021-11-01 | 2022-10-31 |                 364 |
+| Sales Booster         | 2022-04-01 | 2023-03-31 |                 364 |
+| Procurement Tracker   | 2024-03-15 | 2024-11-15 |                 245 |
+| Operations Streamline | 2022-09-01 | 2023-09-01 |                 365 |
++-----------------------+------------+------------+---------------------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->     project_name,
+    ->     start_date,
+    ->     end_date,
+    ->     CONCAT(
+    ->         DATE_FORMAT(end_date, '%M'), ' ', -- Month name
+    ->         DATE_FORMAT(end_date, '%d'), ', ', -- Day of month
+    ->         DATE_FORMAT(end_date, '%Y') -- Year
+    ->     ) AS formatted_end_date
+    -> FROM Projects
+    -> WHERE end_date = '2025-07-23';
+Empty set (0.00 sec)
+
+mysql> select project_name, start_date, end_date, CASE WHEN end_date IS NULL THEN 'ongoing' ELSE 'completed' END AS project_status FROM projects;
++---------------------------+------------+------------+----------------+
+| project_name              | start_date | end_date   | project_status |
++---------------------------+------------+------------+----------------+
+| HR Revamp                 | 2023-01-01 | 2023-12-31 | completed      |
+| Finance Automation        | 2022-05-15 | 2023-04-30 | completed      |
+| IT Infrastructure Upgrade | 2024-01-01 | NULL       | ongoing        |
+| Marketing Blitz 2025      | 2025-02-01 | 2025-06-30 | completed      |
+| Legal Compliance          | 2023-07-10 | 2024-01-10 | completed      |
+| Customer Portal           | 2021-11-01 | 2022-10-31 | completed      |
+| Sales Booster             | 2022-04-01 | 2023-03-31 | completed      |
+| R&D Pilot                 | 2025-01-01 | NULL       | ongoing        |
+| Procurement Tracker       | 2024-03-15 | 2024-11-15 | completed      |
+| Operations Streamline     | 2022-09-01 | 2023-09-01 | completed      |
++---------------------------+------------+------------+----------------+
+10 rows in set (0.00 sec)
+
+mysql> select name, salary, case WHEN salary < 30000 THEN 'low' WHEN salary >=30000 AND salary < 60000 THEN 'medium' ELSE 'high' END AS salary_band from employee;
++------+---------+-------------+
+| name | salary  | salary_band |
++------+---------+-------------+
+| NULL | 4500.00 | low         |
+| NULL | 5000.00 | low         |
+| NULL | 6700.00 | low         |
+| NULL | 4800.00 | low         |
+| NULL | 7000.00 | low         |
+| NULL | 6000.00 | low         |
+| NULL | 4900.00 | low         |
+| NULL | 3100.00 | low         |
+| NULL | 2700.00 | low         |
+| NULL | 3600.00 | low         |
++------+---------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> select name, COALESCE(email, 'no email') AS employee_email from employee;
++------+---------------------------+
+| name | employee_email            |
++------+---------------------------+
+| NULL | alice.johnson@company.com |
+| NULL | bob.smith@company.com     |
+| NULL | carol.adams@company.com   |
+| NULL | david.lee@company.com     |
+| NULL | eve.martins@company.com   |
+| NULL | frank.green@company.com   |
+| NULL | grace.brown@company.com   |
+| NULL | hank.wilson@company.com   |
+| NULL | ivy.clark@company.com     |
+| NULL | jake.white@company.com    |
++------+---------------------------+
+10 rows in set (0.00 sec)
+
+mysql> select name, hire_date, CASE WHEN hire_date < '2015-01-01' THEN 'veteran' ELSE 'non_veteran' END AS seniority from employee;
++------+------------+-------------+
+| name | hire_date  | seniority   |
++------+------------+-------------+
+| NULL | 2015-03-15 | non_veteran |
+| NULL | 2018-06-23 | non_veteran |
+| NULL | 2019-09-10 | non_veteran |
+| NULL | 2020-02-05 | non_veteran |
+| NULL | 2019-12-11 | non_veteran |
+| NULL | 2017-07-08 | non_veteran |
+| NULL | 2014-11-02 | veteran     |
+| NULL | 2013-02-17 | veteran     |
+| NULL | 2021-08-30 | non_veteran |
+| NULL | 2022-05-19 | non_veteran |
++------+------------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> select name, COALESCE(salary, 3000) AS andjusted_salary from employee;
++------+------------------+
+| name | andjusted_salary |
++------+------------------+
+| NULL |          4500.00 |
+| NULL |          5000.00 |
+| NULL |          6700.00 |
+| NULL |          4800.00 |
+| NULL |          7000.00 |
+| NULL |          6000.00 |
+| NULL |          4900.00 |
+| NULL |          3100.00 |
+| NULL |          2700.00 |
+| NULL |          3600.00 |
++------+------------------+
+10 rows in set (0.00 sec)
+
+mysql> select e.name, d.department_name, CASE WHEN d.department_name = 'IT' THEN 'IT department' WHEN d.department_name =  'human resources' THEN 'HR department' ELSE 'other department' END AS department_category FROM employee e JOIN department d ON e.department_id = d.department_id;
++------+--------------------------+---------------------+
+| name | department_name          | department_category |
++------+--------------------------+---------------------+
+| NULL | human resources          | HR department       |
+| NULL | information technology   | other department    |
+| NULL | finance                  | other department    |
+| NULL | marketing                | other department    |
+| NULL | information technology   | other department    |
+| NULL | sales                    | other department    |
+| NULL | legal                    | other department    |
+| NULL | operations               | other department    |
+| NULL | research and development | other department    |
+| NULL | customer service         | other department    |
++------+--------------------------+---------------------+
+10 rows in set (0.00 sec)
+
+mysql> select name, salary, CASE WHEN salary <= 20000 THEN 'band A (low tax)' WHEN salary > 20000 AND salary <= 50000 THEN 'band b (medium tax)' ELSE 'band c (high tax)' END AS tax_band from employee;
++------+---------+------------------+
+| name | salary  | tax_band         |
++------+---------+------------------+
+| NULL | 4500.00 | band A (low tax) |
+| NULL | 5000.00 | band A (low tax) |
+| NULL | 6700.00 | band A (low tax) |
+| NULL | 4800.00 | band A (low tax) |
+| NULL | 7000.00 | band A (low tax) |
+| NULL | 6000.00 | band A (low tax) |
+| NULL | 4900.00 | band A (low tax) |
+| NULL | 3100.00 | band A (low tax) |
+| NULL | 2700.00 | band A (low tax) |
+| NULL | 3600.00 | band A (low tax) |
++------+---------+------------------+
+10 rows in set (0.00 sec)
+mysql>
+mysql> select employee_id, name, CASE WHEN MOD(employee_id, 2) = 0 THEN 'even id' ELSE 'ODD ID' END AS id_parity from employee;
++-------------+------+-----------+
+| employee_id | name | id_parity |
++-------------+------+-----------+
+|         101 | NULL | ODD ID    |
+|         102 | NULL | even id   |
+|         103 | NULL | ODD ID    |
+|         104 | NULL | even id   |
+|         105 | NULL | ODD ID    |
+|         106 | NULL | even id   |
+|         107 | NULL | ODD ID    |
+|         108 | NULL | even id   |
+|         109 | NULL | ODD ID    |
+|         110 | NULL | even id   |
++-------------+------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->     employee_id,
+    ->     CONCAT(
+    ->         COALESCE(first_name, 'Unknown'), -- Use 'Unknown' if first_name is NULL
+    ->         ' ',
+    ->         COALESCE(last_name, '') -- Use empty string if last_name is NULL
+    ->     ) AS full_name_with_fallback
+    -> FROM Employee;
++-------------+-------------------------+
+| employee_id | full_name_with_fallback |
++-------------+-------------------------+
+|         101 | alice                   |
+|         102 | bob                     |
+|         103 | carol                   |
+|         104 | david                   |
+|         105 | eve                     |
+|         106 | frank                   |
+|         107 | grace                   |
+|         108 | hank                    |
+|         109 | ivy                     |
+|         110 | jake                    |
++-------------+-------------------------+
+10 rows in set (0.00 sec)
+
+mysql> select name, email, CASE WHEN UPPER(email) LIKE '%TEST%' THEN 'dummy account' ELSE 'valid account' END AS email_status from employee;
++------+---------------------------+---------------+
+| name | email                     | email_status  |
++------+---------------------------+---------------+
+| NULL | alice.johnson@company.com | valid account |
+| NULL | bob.smith@company.com     | valid account |
+| NULL | carol.adams@company.com   | valid account |
+| NULL | david.lee@company.com     | valid account |
+| NULL | eve.martins@company.com   | valid account |
+| NULL | frank.green@company.com   | valid account |
+| NULL | grace.brown@company.com   | valid account |
+| NULL | hank.wilson@company.com   | valid account |
+| NULL | ivy.clark@company.com     | valid account |
+| NULL | jake.white@company.com    | valid account |
++------+---------------------------+---------------+
+10 rows in set (0.00 sec)
+mysql> SELECT
+    ->     name,
+    ->     hire_date,
+    ->     CASE
+    ->         WHEN YEAR(hire_date) <= YEAR(CURDATE()) - 10 THEN 'Senior' -- Hired 10+ years ago
+    ->         WHEN YEAR(hire_date) <= YEAR(CURDATE()) - 5 THEN 'Mid-Level' -- Hired 5-9 years ago
+    ->         ELSE 'Junior'
+    ->     END AS seniority_level
+    -> FROM Employee;
++------+------------+-----------------+
+| name | hire_date  | seniority_level |
++------+------------+-----------------+
+| NULL | 2015-03-15 | Senior          |
+| NULL | 2018-06-23 | Mid-Level       |
+| NULL | 2019-09-10 | Mid-Level       |
+| NULL | 2020-02-05 | Mid-Level       |
+| NULL | 2019-12-11 | Mid-Level       |
+| NULL | 2017-07-08 | Mid-Level       |
+| NULL | 2014-11-02 | Senior          |
+| NULL | 2013-02-17 | Senior          |
+| NULL | 2021-08-30 | Junior          |
+| NULL | 2022-05-19 | Junior          |
++------+------------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> select name, salary, CASE WHEN salary < 30000 THEN '5% INCREMENT' WHEN salary >= 30000 AND salary < 60000 THEN '3% increment' END AS recommended_increment FROM employee;
++------+---------+-----------------------+
+| name | salary  | recommended_increment |
++------+---------+-----------------------+
+| NULL | 4500.00 | 5% INCREMENT          |
+| NULL | 5000.00 | 5% INCREMENT          |
+| NULL | 6700.00 | 5% INCREMENT          |
+| NULL | 4800.00 | 5% INCREMENT          |
+| NULL | 7000.00 | 5% INCREMENT          |
+| NULL | 6000.00 | 5% INCREMENT          |
+| NULL | 4900.00 | 5% INCREMENT          |
+| NULL | 3100.00 | 5% INCREMENT          |
+| NULL | 2700.00 | 5% INCREMENT          |
+| NULL | 3600.00 | 5% INCREMENT          |
++------+---------+-----------------------+
+10 rows in set (0.00 sec)
+
+mysql> select name, hire_date, CASE WHEN MONTH(hire_date) = MONTH(curdate()) THEN 'anniversary month!' ELSE 'not anniversary month' END AS anniversary_status from employee;
++------+------------+-----------------------+
+| name | hire_date  | anniversary_status    |
++------+------------+-----------------------+
+| NULL | 2015-03-15 | not anniversary month |
+| NULL | 2018-06-23 | not anniversary month |
+| NULL | 2019-09-10 | not anniversary month |
+| NULL | 2020-02-05 | not anniversary month |
+| NULL | 2019-12-11 | not anniversary month |
+| NULL | 2017-07-08 | anniversary month!    |
+| NULL | 2014-11-02 | not anniversary month |
+| NULL | 2013-02-17 | not anniversary month |
+| NULL | 2021-08-30 | not anniversary month |
+| NULL | 2022-05-19 | not anniversary month |
++------+------------+-----------------------+
+10 rows in set (0.00 sec)
